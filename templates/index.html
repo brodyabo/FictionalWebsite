@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abowitz Estates</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #005792;
+            color: #fff;
+            text-align: center;
+            padding: 1em 0;
+        }
+
+        nav {
+            background-color: #e44d26;
+            text-align: center;
+            padding: 0.5em 0;
+        }
+
+        nav a {
+            color: #fff;
+            margin: 0 1em;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .houses {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px auto;
+            max-width: 1500px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .house {
+            text-align: center;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #fff;
+            transition: background-color 0.3s ease;
+        }
+
+        .house:hover {
+            background-color: #e44d26;
+            color: #fff;
+        }
+
+        .house img {
+            max-width: 100%;
+            height: 150px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .sort-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Abowitz Estates</h1>
+    </header>
+
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-sm bg-light">
+            <div class="container-fluid">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/index">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <main>
+        <div class="sort-section">
+            <label for="sort">Sort By:</label>
+            <select id="sort" onchange="sortHouses()">
+                <option value="price-high">Price - High to Low</option>
+                <option value="price-low">Price - Low to High</option>
+                <option value="name">Name</option>
+            </select>
+        </div>
+
+        <section class="houses" id="houses-container">
+        </section>
+    </main>
+
+    <!-- Bootstrap JS and Popper.js for Bootstrap 5 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const houses = [
+            { name: "Modern Mansion", price: 10000000 },
+            { name: "Cozy Cottage", price: 380000 },
+            { name: "Luxury Villa", price: 3200000 },
+            { name: "Beachfront Retreat", price: 3300000 },
+            { name: "Classic Colonial", price: 1000000 },
+            { name: "Mountain Cabin", price: 780000 },
+            { name: "Rustic Retreat", price: 690000 },
+            { name: "Urban Loft", price: 880000 },
+            { name: "Suburban Oasis", price: 1000000 },
+            { name: "Contemporary Condo", price: 900000 },
+            // Add more houses
+        ];
+
+        renderHouses(houses);
+
+        function sortHouses() {
+            const sortOption = document.getElementById("sort").value;
+            const isDescending = sortOption.includes("high");
+
+            const sortedHouses = [...houses].sort((a, b) => {
+                if (sortOption === "name") {
+                    return a.name.localeCompare(b.name);
+                } else {
+                    const sortOrder = isDescending ? -1 : 1;
+                    return sortOrder * (a.price - b.price);
+                }
+            });
+
+            renderHouses(sortedHouses);
+        }
+
+        function renderHouses(houseList) {
+            const container = document.getElementById("houses-container");
+            container.innerHTML = "";
+
+            houseList.forEach(house => {
+                const houseElement = document.createElement("div");
+                houseElement.classList.add("house");
+                houseElement.innerHTML = `
+                    <img src="/static/${house.name}.jpeg" alt="${house.name}">
+                    <h3>${house.name}</h3>
+                    <p>$${house.price}</p>
+                `;
+                container.appendChild(houseElement);
+            });
+        }
+    </script>
+</body>
+
+</html>
